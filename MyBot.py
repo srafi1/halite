@@ -3,7 +3,6 @@ from hlt import NORTH, EAST, SOUTH, WEST, STILL, Move, Square
 import random
 
 myID, game_map = hlt.get_init()
-hlt.send_init("DistanceBot")
 
 #f = open("lastlog.log", 'w')
 
@@ -20,9 +19,15 @@ def move(s):
     ns = game_map.neighbors(s)
     for d, n in enumerate(ns):
         ctr = 1
-        while n.owner == myID and (ctr < dist or dist == 0) and ctr < 30:
+        strength = 0
+        prod = 0
+        while n.owner == myID and ctr < 45:
             ctr += 1
             n = game_map.get_target(n, d)
+            strength = n.strength
+            prod = n.production
+        ctr -= prod/2
+        ctr += (strength - 100)/50
         if ctr < dist or dist == 0:
             dist = ctr
             side = d
@@ -30,6 +35,10 @@ def move(s):
     if n.owner != myID and n.strength > s.strength:
         return Move(s, STILL)
     return Move(s, side)
+            
+            
+#execute
+hlt.send_init("DistanceBot_strength")
 
 while True:
     game_map.get_frame()

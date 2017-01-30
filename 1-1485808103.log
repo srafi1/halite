@@ -1,0 +1,20 @@
+ --- Init ---
+DistanceBot_selection
+ --- Bot used 73 milliseconds ---
+-----------------------------------------------------------------------------
+ --- Frame #1 ---
+Traceback (most recent call last):
+ --- Bot used 6 milliseconds ---
+ERRORED!
+Response received (if any):
+Traceback (most recent call last):
+ --- Bot was killed. Below is the rest of its output (if any): ---
+  File "MyBot.py", line 90, in <module>
+    moves = [move_early(s) for s in game_map if s.owner == myID]        
+  File "MyBot.py", line 90, in <listcomp>
+    moves = [move_early(s) for s in game_map if s.owner == myID]        
+  File "MyBot.py", line 44, in move_early
+    f.write('close\n')
+ValueError: I/O operation on closed file.
+
+ --- End bot output ---

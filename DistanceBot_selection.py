@@ -33,7 +33,7 @@ for s in targets:
         target = s
 f.write(str(target) + '\n')
 global done
-done = target.strength < 200
+done = False
 x = target.x
 y = target.y
 f.write("%d, %d\n" % (x, y))
@@ -83,7 +83,7 @@ def move_early(s):
     return move(s)
 
 #execute
-hlt.send_init("DistanceBot_picky")
+hlt.send_init("DistanceBot_selection")
 framenum = 0
 while True:
     game_map.get_frame()

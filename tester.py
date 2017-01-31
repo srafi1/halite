@@ -71,29 +71,19 @@ def move(s):
 
 def move_early(s):
     global done
+    if s.strength < s.production * 5:
+        return Move(s, STILL)
     if s.x == x and s.y == y:
         done = True
     if done:
         return move(s)
-    go = 0
-    t = None
-    wait = 15
     for d, n in enumerate(game_map.neighbors(s)):
         if game_map.get_distance(target, n) < game_map.get_distance(target, s):
-            if t != None and t.strength < n.strength:
-                continue
-            go = d
-            t = n
-            if n.owner == myID:
-                wait = 5
-    if t.strength < s.strength and t.owner != myID:
-        return Move(s, go)
-    if s.strength < s.production * wait:
-        return Move(s, STILL)
-    return Move(s, go)
+            return Move(s, d)
+    return move(s)
 
 #execute
-hlt.send_init("DistanceBot_patient")
+hlt.send_init("DistanceBot_selection")
 framenum = 0
 while True:
     game_map.get_frame()

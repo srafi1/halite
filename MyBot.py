@@ -40,6 +40,7 @@ f.write("%d, %d\n" % (x, y))
 f.close()
 
 def move(s):
+    global framenum
     if s.strength < s.production * 5:
         return Move(s, STILL)
 
@@ -48,20 +49,28 @@ def move(s):
             return Move(s, d)
 
     side = 0
-    dist = 0
+    dist = None
     ns = game_map.neighbors(s)
     for d, n in enumerate(ns):
         ctr = 1
         strength = 0
         prod = 0
+        enemy = False
         while n.owner == myID and ctr < 45:
             ctr += 1
             n = game_map.get_target(n, d)
             strength = n.strength
             prod = n.production
-        ctr -= prod/3
-        ctr += strength/50
-        if ctr < dist or dist == 0:
+            enemy = n.owner != 0 and n.owner != myID
+        if framenum < 100:
+            ctr -= prod/3
+            ctr += strength/50
+        else:
+            ctr -= prod/2
+            ctr += strength/70            
+        if enemy:
+            ctr -= 2
+        if dist == None or ctr < dist:
             dist = ctr
             side = d
     n = game_map.get_target(s, side)
@@ -93,9 +102,11 @@ def move_early(s):
     return Move(s, go)
 
 #execute
-hlt.send_init("DistanceBot_patient")
+hlt.send_init("DistanceBot_fighter")
+global framenum
 framenum = 0
 while True:
+    global framenum
     game_map.get_frame()
     framenum += 1
     if done:
